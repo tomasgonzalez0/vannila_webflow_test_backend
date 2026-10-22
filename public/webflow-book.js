@@ -108,6 +108,7 @@
       slots.appendChild(button);
     });
     message("Selecciona una hora disponible.", "ready");
+    setBusy(false);
   }
   async function loadAvailability() {
     time.value = "";
