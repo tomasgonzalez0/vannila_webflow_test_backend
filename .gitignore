@@ -6,6 +6,8 @@ coverage/
 .env.*.local
 .pgtest-data/
 .pgtest-log.txt
+.neon-function*/
+.neon-function*.zip
 *.tsbuildinfo
 *.log
 !.env.example

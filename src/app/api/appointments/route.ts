@@ -36,8 +36,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    await enforceAntiAbuse(request, parsed.data.turnstileToken);
-    const id = await createAppointment(getPool(), parsed.data);
+    const pool = getPool();
+    await enforceAntiAbuse(request, parsed.data, pool);
+    const id = await createAppointment(pool, parsed.data);
     return json({ success: true, id }, 201, check.origin);
   } catch (error) {
     if (error instanceof SlotUnavailableError) return json({ success: false, error: "SLOT_UNAVAILABLE" }, 409, check.origin);

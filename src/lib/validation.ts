@@ -25,7 +25,8 @@ export const appointmentSchema = z.object({
   date: dateSchema,
   time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/),
   designNotes: z.string().trim().max(1000).optional().transform((value) => value || undefined),
-  turnstileToken: z.string().trim().max(4096).optional(),
+  challengeToken: z.string().trim().min(32).max(1024),
+  website: z.string().max(0).optional().default(""),
 }).strict();
 
 export type AppointmentInput = z.infer<typeof appointmentSchema>;

@@ -24,3 +24,13 @@ CREATE TABLE IF NOT EXISTS appointments (
 
 CREATE INDEX IF NOT EXISTS appointments_phone_created_at_idx
   ON appointments (phone, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS booking_rate_limits (
+  rate_limit_key text PRIMARY KEY,
+  window_started timestamptz NOT NULL,
+  attempt_count integer NOT NULL CHECK (attempt_count > 0),
+  expires_at timestamptz NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS booking_rate_limits_expires_at_idx
+  ON booking_rate_limits (expires_at);

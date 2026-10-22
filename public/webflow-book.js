@@ -15,6 +15,19 @@
   var success = document.getElementById("booking-success");
   var api = (form.getAttribute("data-api-base") || "").replace(/\/$/, "");
   var production = form.getAttribute("data-booking-mode") === "production" && /^https:\/\//.test(api);
+  var challengeToken = "";
+  var website = document.getElementById("booking-website");
+  if (!website) {
+    website = document.createElement("input");
+    website.type = "text";
+    website.id = "booking-website";
+    website.name = "website";
+    website.tabIndex = -1;
+    website.autocomplete = "off";
+    website.setAttribute("aria-hidden", "true");
+    website.style.cssText = "position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden";
+    form.appendChild(website);
+  }
 
   function bogotaToday() {
     var parts = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Bogota", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
@@ -47,8 +60,24 @@
     }
   }
   function setBusy(busy) {
-    submit.disabled = busy || !production || !time.value;
+    submit.disabled = busy || !production || !time.value || !challengeToken;
     submit.value = busy ? "Guardando…" : "Guardar cita";
+  }
+  async function refreshChallenge() {
+    challengeToken = "";
+    setBusy(false);
+    if (!production) return false;
+    try {
+      var response = await fetch(api + "/api/booking-challenge", { headers: { Accept: "application/json" }, cache: "no-store" });
+      var data = await response.json();
+      if (!response.ok || !data.token) throw new Error("CHALLENGE_FAILED");
+      challengeToken = data.token;
+      setBusy(false);
+      return true;
+    } catch {
+      message("No pudimos preparar el formulario de forma segura. Reintenta en un momento.", "error");
+      return false;
+    }
   }
   function selectTime(value, button) {
     time.value = value;
@@ -139,6 +168,7 @@
       return;
     }
     if (!validate()) return;
+    if (!challengeToken && !(await refreshChallenge())) return;
     setBusy(true);
     message("Guardando tu cita…", "loading");
     var payload = {
@@ -150,8 +180,10 @@
       date: date.value,
       time: time.value,
       designNotes: document.getElementById("booking-notes").value.trim() || undefined,
-      turnstileToken: window.vannilaTurnstileToken || undefined,
+      challengeToken: challengeToken,
+      website: website.value,
     };
+    var succeeded = false;
     try {
       var response = await fetch(api + "/api/appointments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       var data = await response.json();
@@ -170,12 +202,16 @@
       form.classList.add("is-hidden");
       success.classList.remove("is-hidden");
       success.focus();
+      succeeded = true;
     } catch {
       message("No pudimos guardar tu cita. Intenta de nuevo o contáctanos por WhatsApp.", "error");
     } finally {
+      challengeToken = "";
+      if (!succeeded) await refreshChallenge();
       setBusy(false);
     }
   });
 
   message(production ? "Elige servicio, fecha y hora para continuar." : "La agenda todavía está en configuración. Los horarios son solo una demostración.", production ? "info" : "demo");
+  if (production) refreshChallenge();
 })();

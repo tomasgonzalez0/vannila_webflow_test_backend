@@ -8,6 +8,7 @@ const valid = {
   service: "soft-gel",
   date: "2099-11-10",
   time: "13:00",
+  challengeToken: "a".repeat(64),
 };
 
 describe("appointment validation", () => {
@@ -27,5 +28,10 @@ describe("appointment validation", () => {
   it("requires preferred name and a plausible WhatsApp number", () => {
     expect(appointmentSchema.safeParse({ ...valid, preferredName: "" }).success).toBe(false);
     expect(appointmentSchema.safeParse({ ...valid, phone: "123" }).success).toBe(false);
+  });
+
+  it("requires an anti-spam challenge and rejects a filled honeypot", () => {
+    expect(appointmentSchema.safeParse({ ...valid, challengeToken: undefined }).success).toBe(false);
+    expect(appointmentSchema.safeParse({ ...valid, website: "spam.example" }).success).toBe(false);
   });
 });

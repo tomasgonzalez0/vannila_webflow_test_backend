@@ -17,6 +17,7 @@ suite("PostgreSQL appointment concurrency", () => {
     service: "soft-gel",
     date: "2099-12-20",
     time: "13:00",
+    challengeToken: "a".repeat(64),
   });
 
   beforeAll(async () => {
