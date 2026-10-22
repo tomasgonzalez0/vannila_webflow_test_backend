@@ -7,6 +7,7 @@
   style.textContent = [
     ":focus-visible{outline:3px solid #A87F79;outline-offset:3px}",
     ".eyebrow{color:#6B403C!important}",
+    ".section-dark .eyebrow{color:#E9E1D9!important}",
     ".section-rose .body-copy{color:#231F20!important}",
     ".whatsapp-float{bottom:56px!important}",
     ".nav-toggle.is-open .nav-toggle-line:nth-child(1){transform:translateY(7px) rotate(45deg)}",
