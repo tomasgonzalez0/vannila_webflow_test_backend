@@ -114,7 +114,7 @@
     time.value = "";
     setBusy(false);
     if (!production) {
-      message("La agenda todavía está en configuración. Los horarios son solo una demostración.", "demo");
+      message("Las reservas en línea no están disponibles en este momento.", "demo");
       return;
     }
     if (!date.value) {
@@ -165,7 +165,7 @@
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     if (!production) {
-      message("La agenda todavía está en configuración. No se guardó ninguna cita.", "demo");
+      message("Las reservas en línea no están disponibles en este momento. No se guardó la cita.", "demo");
       return;
     }
     if (!validate()) return;
@@ -213,6 +213,6 @@
     }
   });
 
-  message(production ? "Elige servicio, fecha y hora para continuar." : "La agenda todavía está en configuración. Los horarios son solo una demostración.", production ? "info" : "demo");
+  message(production ? "Elige servicio, fecha y hora para continuar." : "Las reservas en línea no están disponibles en este momento.", production ? "info" : "demo");
   if (production) refreshChallenge();
 })();

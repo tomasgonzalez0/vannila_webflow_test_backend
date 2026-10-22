@@ -4,7 +4,7 @@ Minimal Next.js App Router + PostgreSQL API for Vannila Atelier. It exposes heal
 
 ## Safety status
 
-The repository defaults to `BOOKING_MODE=demo`. Pilot slots (`09:00`, `13:00`, `17:00`) are not confirmed business hours and the Webflow page labels them accordingly. Production mode requires a private `BOOKING_CHALLENGE_SECRET`; the server verifies a signed, short-lived, one-use challenge and applies durable PostgreSQL-backed global and phone-hash rate limits before accepting a write.
+The production deployment uses the fixed public slots `09:00`, `13:00`, and `17:00`. Production mode requires a private `BOOKING_CHALLENGE_SECRET`; the server verifies a signed, short-lived, one-use challenge and applies durable PostgreSQL-backed global and phone-hash rate limits before accepting a write.
 
 ## Local setup
 
