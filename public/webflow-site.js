@@ -1,9 +1,14 @@
 (function () {
   "use strict";
 
+  document.documentElement.setAttribute("lang", "es");
+
   var style = document.createElement("style");
   style.textContent = [
     ":focus-visible{outline:3px solid #A87F79;outline-offset:3px}",
+    ".eyebrow{color:#6B403C!important}",
+    ".section-rose .body-copy{color:#231F20!important}",
+    ".whatsapp-float{bottom:56px!important}",
     ".nav-toggle.is-open .nav-toggle-line:nth-child(1){transform:translateY(7px) rotate(45deg)}",
     ".nav-toggle.is-open .nav-toggle-line:nth-child(2){opacity:0}",
     ".nav-toggle.is-open .nav-toggle-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}",
